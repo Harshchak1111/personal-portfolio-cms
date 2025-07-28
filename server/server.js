@@ -1,35 +1,45 @@
-require('dotenv').config();
+// ✅ Load environment variables from .env
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') }); // Ensures .env is read even if run from root
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
 const authRoutes = require('./routes/authRoutes');
 const portfolioRoutes = require('./routes/portfolioroutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
 
-// Middleware
+// ✅ Debug log
+console.log('🔍 Debug MONGO_URI:', MONGO_URI);
+
+// ✅ Safety check for .env variable
+if (!MONGO_URI) {
+  console.error('❌ MONGO_URI is not defined in .env or failed to load');
+  process.exit(1);
+}
+
+// ✅ Serve static files from /uploads (for images)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// ✅ Middleware
 app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static('uploads')); // ✅ For serving image uploads
+app.use(express.json()); // replaces body-parser
 
-// Routes
+// ✅ API Routes
 app.use('/api/auth', authRoutes);             // login/register
-app.use('/api/portfolio', portfolioRoutes);   // CRUD + public
+app.use('/api/portfolio', portfolioRoutes);   // portfolio CRUD
 
-// Default root route
+// ✅ Health check route
 app.get('/', (req, res) => {
   res.send('🌐 Portfolio CMS Backend is running');
 });
 
-// MongoDB Connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+// ✅ Connect to MongoDB
+mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('✅ Connected to MongoDB');
     app.listen(PORT, () => {
@@ -38,4 +48,5 @@ mongoose
   })
   .catch((err) => {
     console.error('❌ MongoDB connection failed:', err.message);
+    process.exit(1);
   });
