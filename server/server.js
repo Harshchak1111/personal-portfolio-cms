@@ -21,12 +21,9 @@ if (!MONGO_URI) {
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const cors = require('cors');
-
 const allowedOrigins = [
-  'https://personal-portfolio-cms-jwbs.vercel.app',
-  'https://personal-portfolio-cms-jwbs-ihqgb7gwb-harshs-projects-8c867ff6.vercel.app',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'https://personal-portfolio-cms-jwbs-8dpb84xlo-harshs-projects-8c867ff6.vercel.app'
 ];
 
 app.use(cors({
@@ -34,14 +31,11 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('CORS not allowed for this origin'));
     }
   },
   credentials: true,
 }));
-
-
-
 
 app.use(express.json());
 
