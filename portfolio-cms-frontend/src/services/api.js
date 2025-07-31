@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://personal-portfolio-cms-server.onrender.com',
+  baseURL: 'https://personal-portfolio-cms-server.onrender.com/api',
 });
 
 API.interceptors.request.use((req) => {
@@ -13,3 +13,4 @@ API.interceptors.request.use((req) => {
 });
 
 export default API;
+

@@ -21,9 +21,12 @@ if (!MONGO_URI) {
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const cors = require('cors');
+
 const allowedOrigins = [
   'https://personal-portfolio-cms-jwbs.vercel.app',
-  'http://localhost:3000' // Optional for local testing
+  'https://personal-portfolio-cms-jwbs-ihqgb7gwb-harshs-projects-8c867ff6.vercel.app',
+  'http://localhost:3000'
 ];
 
 app.use(cors({
@@ -36,6 +39,7 @@ app.use(cors({
   },
   credentials: true,
 }));
+
 
 
 
