@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import Register from './pages/register';
 import Dashboard from './pages/Dashboard';
-import PublicPortfolio from './pages/publicportfolio'; // ✅ Import added
+import PublicPortfolio from './pages/publicportfolio';
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem('token');
@@ -26,10 +26,11 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/public/:username" element={<PublicPortfolio />} /> {/* ✅ Public route added */}
+        <Route path="/public/:username" element={<PublicPortfolio />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
