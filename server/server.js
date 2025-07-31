@@ -21,10 +21,23 @@ if (!MONGO_URI) {
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const allowedOrigins = [
+  'https://personal-portfolio-cms-jwbs.vercel.app',
+  'http://localhost:3000' // Optional for local testing
+];
+
 app.use(cors({
-  origin: 'https://personal-portfolio-cms-mmux-git-main-harshs-projects-8c867ff6.vercel.app',
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
+
+
 
 app.use(express.json());
 
